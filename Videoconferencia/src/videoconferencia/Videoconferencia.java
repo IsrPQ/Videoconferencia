@@ -6,7 +6,7 @@ package videoconferencia;
 
 /**
  *
- * @author Israel
+ * @author 
  */
 public class Videoconferencia {
 
