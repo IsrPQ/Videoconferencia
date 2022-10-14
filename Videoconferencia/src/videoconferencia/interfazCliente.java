@@ -5,6 +5,14 @@
  */
 package videoconferencia;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Usuario
@@ -87,6 +95,34 @@ public class interfazCliente extends javax.swing.JFrame {
 
     private void botonIniSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniSesionActionPerformed
         // TODO add your handling code here:
+        String nombreUsuario =  registroUsuario.getText();
+             
+        Conexion cc=new Conexion();
+        Connection cn = null;
+        try {
+            cn = cc.getConexion();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(interfazAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
+            if(existe(nombreUsuario)){
+                JOptionPane.showMessageDialog(null,"EL USUARIO YA EXISTE!!!");
+            }else{  
+    
+                PreparedStatement pst=cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
+                pst.setString(1,nombreUsuario);
+                int a=pst.executeUpdate();
+                if(a>0){
+                    JOptionPane.showMessageDialog(null,"Registro exitoso");
+                    limpiar();
+                }
+                else{
+                         JOptionPane.showMessageDialog(null,"Error al agregar");
+                    }
+            }
+        }      
+            catch(Exception e){
+       }
     }//GEN-LAST:event_botonIniSesionActionPerformed
 
     /**
@@ -130,4 +166,29 @@ public class interfazCliente extends javax.swing.JFrame {
     private javax.swing.JTextField registroUsuario;
     private javax.swing.JLabel tituloConferencia;
     // End of variables declaration//GEN-END:variables
+
+    private boolean existe(String nombreUsuario)throws SQLException, ClassNotFoundException {
+             PreparedStatement ps = null;
+        Conexion cc=new Conexion();
+        Connection cn = null;
+             cn  = cc.getConexion();  
+            //Connection con = getConexion();
+            ResultSet rs;
+             String sql = "SELECT NOMBRE_USUARIO FROM USUARIO WHERE NOMBRE_USUARIO = ?";
+
+        ps = cn.prepareStatement(sql);
+        ps.setString(1, nombreUsuario);
+        rs = ps.executeQuery();
+        
+        if(rs.next()){
+            return true;
+
+        }else
+            return false;
+        
+    }
+        private void limpiar(){
+        registroUsuario.setText("");
+       
+    }
 }
