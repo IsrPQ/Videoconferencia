@@ -5,6 +5,9 @@
  */
 package videoconferencia;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,35 +97,36 @@ public class interfazCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonIniSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniSesionActionPerformed
-        // TODO add your handling code here:
-        String nombreUsuario =  registroUsuario.getText();
-             
-        Conexion cc=new Conexion();
-        Connection cn = null;
-        try {
+
+            // TODO add your handling code here:
+            String nombreUsuario =  registroUsuario.getText();
+            
+            Conexion cc=new Conexion();
+            Connection cn = null;
+            try {
             cn = cc.getConexion();
-        } catch (ClassNotFoundException ex) {
+            } catch (ClassNotFoundException ex) {
             Logger.getLogger(interfazAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try{
-            if(existe(nombreUsuario)){
-                JOptionPane.showMessageDialog(null,"EL USUARIO YA EXISTE!!!");
-            }else{  
-    
-                PreparedStatement pst=cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
-                pst.setString(1,nombreUsuario);
-                int a=pst.executeUpdate();
-                if(a>0){
-                    JOptionPane.showMessageDialog(null,"Registro exitoso");
-                    limpiar();
-                }
-                else{
-                         JOptionPane.showMessageDialog(null,"Error al agregar");
-                    }
             }
-        }      
+            try{
+            if(existe(nombreUsuario)){
+            JOptionPane.showMessageDialog(null,"EL USUARIO YA EXISTE!!!");
+            }else{
+            
+            PreparedStatement pst=cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
+            pst.setString(1,nombreUsuario);
+            int a=pst.executeUpdate();
+            if(a>0){
+            JOptionPane.showMessageDialog(null,"Registro exitoso");
+            limpiar();
+            }
+            else{      
+            JOptionPane.showMessageDialog(null,"Error al agregar");
+            }
+            }
+            }
             catch(Exception e){
-       }
+            }
     }//GEN-LAST:event_botonIniSesionActionPerformed
 
     /**
@@ -191,4 +195,6 @@ public class interfazCliente extends javax.swing.JFrame {
         registroUsuario.setText("");
        
     }
+        
+    
 }

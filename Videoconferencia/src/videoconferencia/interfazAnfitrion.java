@@ -5,17 +5,31 @@
  */
 package videoconferencia;
 
+import controlador.ControllerAnfitrion;
+import java.awt.Color;
+import java.beans.Visibility;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Usuario
  */
-public class interfazAnfitrion extends javax.swing.JFrame {
+public class interfazAnfitrion extends javax.swing.JFrame{
 
     /**
      * Creates new form interfazAnfitrion
      */
     public interfazAnfitrion() {
         initComponents();
+        /*
+        Thread hilo = new Thread(this);
+        hilo.start();
+        */
     }
 
     /**
@@ -27,8 +41,9 @@ public class interfazAnfitrion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         monitorCliente = new javax.swing.JLabel();
-        texCliente = new javax.swing.JTextField();
         conectados = new javax.swing.JLabel();
         estadoServer = new javax.swing.JLabel();
         textServidor = new javax.swing.JTextField();
@@ -36,18 +51,17 @@ public class interfazAnfitrion extends javax.swing.JFrame {
         botonDetener = new javax.swing.JButton();
         conectorClientes = new javax.swing.JTextField();
         ventanaServer = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaMonitorCliente = new javax.swing.JTextArea();
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         monitorCliente.setFont(new java.awt.Font("Times New Roman", 3, 12)); // NOI18N
         monitorCliente.setText("Monitor Cliente");
-
-        texCliente.setBackground(new java.awt.Color(255, 255, 204));
-        texCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                texClienteActionPerformed(evt);
-            }
-        });
 
         conectados.setFont(new java.awt.Font("Times New Roman", 3, 12)); // NOI18N
         conectados.setText("Clientes Conectados");
@@ -81,6 +95,10 @@ public class interfazAnfitrion extends javax.swing.JFrame {
         ventanaServer.setForeground(new java.awt.Color(0, 153, 51));
         ventanaServer.setText("SALA PRINCIPAL");
 
+        txtAreaMonitorCliente.setColumns(20);
+        txtAreaMonitorCliente.setRows(5);
+        jScrollPane2.setViewportView(txtAreaMonitorCliente);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,12 +125,13 @@ public class interfazAnfitrion extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(91, 91, 91)
                         .addComponent(monitorCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(texCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(conectorClientes)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(conectados)
                         .addGap(47, 47, 47))))
         );
@@ -126,9 +145,9 @@ public class interfazAnfitrion extends javax.swing.JFrame {
                     .addComponent(monitorCliente)
                     .addComponent(conectados))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(texCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(conectorClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(conectorClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(estadoServer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -144,61 +163,72 @@ public class interfazAnfitrion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonComenzarActionPerformed
-        // TODO add your handling code here:
+
+        textServidor.setBackground(Color.GREEN);
+        textServidor.setText("En Linea");
     }//GEN-LAST:event_botonComenzarActionPerformed
 
     private void botonDetenerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDetenerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonDetenerActionPerformed
 
-    private void texClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_texClienteActionPerformed
-
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(interfazAnfitrion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(interfazAnfitrion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(interfazAnfitrion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(interfazAnfitrion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+        /*
         java.awt.EventQueue.invokeLater(new Runnable() {
+            
             public void run() {
                 new interfazAnfitrion().setVisible(true);
+                
             }
-        });
+            
+        });*/
+        interfazAnfitrion v = new interfazAnfitrion();
+        ControllerAnfitrion c = new ControllerAnfitrion(v);
+        v.setVisible(true);
+        v.setLocationRelativeTo(null);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonComenzar;
-    private javax.swing.JButton botonDetener;
+    public javax.swing.JButton botonComenzar;
+    public javax.swing.JButton botonDetener;
     private javax.swing.JLabel conectados;
     private javax.swing.JTextField conectorClientes;
     private javax.swing.JLabel estadoServer;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel monitorCliente;
-    private javax.swing.JTextField texCliente;
-    private javax.swing.JTextField textServidor;
+    public javax.swing.JTextField textServidor;
+    public javax.swing.JTextArea txtAreaMonitorCliente;
     private javax.swing.JLabel ventanaServer;
     // End of variables declaration//GEN-END:variables
+
+    
+    /*
+    @Override
+    public void run() {
+        
+        try {
+            ServerSocket servidor = new ServerSocket(9999);
+            while(true){
+                Socket miSocket = servidor.accept();
+            
+                DataInputStream flujo_entrada = new DataInputStream(miSocket.getInputStream());
+
+                String mensaje_texto = flujo_entrada.readUTF();
+
+                txtAreaMonitorCliente.append("\n Se ha conectado: "+mensaje_texto);
+
+                miSocket.close();
+                
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(IniciarServidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+*/
 }
