@@ -24,7 +24,6 @@ public class Videoconferencia {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new interfazCliente().setVisible(true);
         new interfazDocente().setVisible(true);
     }
     
