@@ -7,6 +7,7 @@ package videoconferencia;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -98,35 +99,50 @@ public class interfazCliente extends javax.swing.JFrame {
 
     private void botonIniSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniSesionActionPerformed
 
-            // TODO add your handling code here:
-            String nombreUsuario =  registroUsuario.getText();
-            
-            Conexion cc=new Conexion();
-            Connection cn = null;
-            try {
+        // TODO add your handling code here:
+        String nombreUsuario = registroUsuario.getText();
+
+        Conexion cc = new Conexion();
+        Connection cn = null;
+        try {
             cn = cc.getConexion();
-            } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(interfazAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            if (existe(nombreUsuario)) {
+                JOptionPane.showMessageDialog(null, "EL USUARIO YA EXISTE!!!");
+            } else {
+
+                PreparedStatement pst = cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
+                pst.setString(1, nombreUsuario);
+                int a = pst.executeUpdate();
+                if (a > 0) {
+                    JOptionPane.showMessageDialog(null, "Registro exitoso");
+                    limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al agregar");
+                }
             }
-            try{
-            if(existe(nombreUsuario)){
-            JOptionPane.showMessageDialog(null,"EL USUARIO YA EXISTE!!!");
-            }else{
-            
-            PreparedStatement pst=cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
-            pst.setString(1,nombreUsuario);
-            int a=pst.executeUpdate();
-            if(a>0){
-            JOptionPane.showMessageDialog(null,"Registro exitoso");
-            limpiar();
-            }
-            else{      
-            JOptionPane.showMessageDialog(null,"Error al agregar");
-            }
-            }
-            }
-            catch(Exception e){
-            }
+        } catch (Exception e) {
+        }
+               
+        //conexion con el servidor
+        
+        Socket miSocket;
+        try {
+            String ip = InetAddress.getLocalHost().getHostAddress();   
+            //Socket miSocket = new Socket("192.168.100.2",9999); // isra
+            //miSocket = new Socket("192.168.0.106", 9999); // da
+            miSocket = new Socket(ip, 9999); //general
+
+            DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
+            flujo_salida.writeUTF(registroUsuario.getText());
+            flujo_salida.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botonIniSesionActionPerformed
 
     /**
@@ -171,30 +187,31 @@ public class interfazCliente extends javax.swing.JFrame {
     private javax.swing.JLabel tituloConferencia;
     // End of variables declaration//GEN-END:variables
 
-    private boolean existe(String nombreUsuario)throws SQLException, ClassNotFoundException {
-             PreparedStatement ps = null;
-        Conexion cc=new Conexion();
+    private boolean existe(String nombreUsuario) throws SQLException, ClassNotFoundException {
+        PreparedStatement ps = null;
+        Conexion cc = new Conexion();
         Connection cn = null;
-             cn  = cc.getConexion();  
-            //Connection con = getConexion();
-            ResultSet rs;
-             String sql = "SELECT NOMBRE_USUARIO FROM USUARIO WHERE NOMBRE_USUARIO = ?";
+        cn = cc.getConexion();
+        //Connection con = getConexion();
+        ResultSet rs;
+        String sql = "SELECT NOMBRE_USUARIO FROM USUARIO WHERE NOMBRE_USUARIO = ?";
 
         ps = cn.prepareStatement(sql);
         ps.setString(1, nombreUsuario);
         rs = ps.executeQuery();
-        
-        if(rs.next()){
+
+        if (rs.next()) {
             return true;
 
-        }else
+        } else {
             return false;
-        
+        }
+
     }
-        private void limpiar(){
+
+    private void limpiar() {
         registroUsuario.setText("");
-       
+
     }
-        
-    
+
 }
