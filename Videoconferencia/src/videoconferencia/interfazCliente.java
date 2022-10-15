@@ -58,6 +58,12 @@ public class interfazCliente extends javax.swing.JFrame {
         nombreUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         nombreUsuario.setText("Nombre Usuario:");
 
+        registroUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroUsuarioActionPerformed(evt);
+            }
+        });
+
         tituloConferencia.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         tituloConferencia.setForeground(new java.awt.Color(51, 51, 255));
         tituloConferencia.setText("Registro a la Video Conferencia");
@@ -67,17 +73,17 @@ public class interfazCliente extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tituloConferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(tituloConferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(26, 26, 26)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(nombreUsuario)
-                                .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(79, 79, 79)
-                            .addComponent(botonIniSesion))))
+                                .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(botonIniSesion)))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -87,11 +93,11 @@ public class interfazCliente extends javax.swing.JFrame {
                 .addComponent(tituloConferencia)
                 .addGap(55, 55, 55)
                 .addComponent(nombreUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(69, 69, 69)
                 .addComponent(botonIniSesion)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -144,6 +150,10 @@ public class interfazCliente extends javax.swing.JFrame {
             Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonIniSesionActionPerformed
+
+    private void registroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registroUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
