@@ -43,6 +43,8 @@ public class interfazCliente extends javax.swing.JFrame {
         nombreUsuario = new javax.swing.JLabel();
         registroUsuario = new javax.swing.JTextField();
         tituloConferencia = new javax.swing.JLabel();
+        contrasena = new javax.swing.JLabel();
+        registroContrasena = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,19 +70,30 @@ public class interfazCliente extends javax.swing.JFrame {
         tituloConferencia.setForeground(new java.awt.Color(51, 51, 255));
         tituloConferencia.setText("Registro a la Video Conferencia");
 
+        contrasena.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        contrasena.setText("Contraseña");
+
+        registroContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroContrasenaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(tituloConferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tituloConferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(nombreUsuario)
-                                .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(registroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                                .addComponent(contrasena)
+                                .addComponent(registroContrasena))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
                         .addComponent(botonIniSesion)))
@@ -95,9 +108,13 @@ public class interfazCliente extends javax.swing.JFrame {
                 .addComponent(nombreUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contrasena)
+                .addGap(7, 7, 7)
+                .addComponent(registroContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(botonIniSesion)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
@@ -107,7 +124,7 @@ public class interfazCliente extends javax.swing.JFrame {
 
         // TODO add your handling code here:
         String nombreUsuario = registroUsuario.getText();
-
+        String contrasena = registroContrasena.getText(); 
         Conexion cc = new Conexion();
         Connection cn = null;
         try {
@@ -117,18 +134,10 @@ public class interfazCliente extends javax.swing.JFrame {
         }
         try {
             if (existe(nombreUsuario)) {
-                JOptionPane.showMessageDialog(null, "EL USUARIO YA EXISTE!!!");
-            } else {
-
-                PreparedStatement pst = cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
-                pst.setString(1, nombreUsuario);
-                int a = pst.executeUpdate();
-                if (a > 0) {
-                    JOptionPane.showMessageDialog(null, "Registro exitoso");
-                    limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al agregar");
-                }
+                JOptionPane.showMessageDialog(null, "Inicio Con Exito");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "No Existe El Usuario");
             }
         } catch (Exception e) {
         }
@@ -154,6 +163,10 @@ public class interfazCliente extends javax.swing.JFrame {
     private void registroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_registroUsuarioActionPerformed
+
+    private void registroContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroContrasenaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registroContrasenaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,7 +205,9 @@ public class interfazCliente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonIniSesion;
+    private javax.swing.JLabel contrasena;
     private javax.swing.JLabel nombreUsuario;
+    private javax.swing.JTextField registroContrasena;
     private javax.swing.JTextField registroUsuario;
     private javax.swing.JLabel tituloConferencia;
     // End of variables declaration//GEN-END:variables

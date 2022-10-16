@@ -4,6 +4,14 @@
  */
 package videoconferencia;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author famil
@@ -26,20 +34,31 @@ public class interfazRegistro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        registroUsuario = new javax.swing.JTextField();
+        registroContrasena = new javax.swing.JTextField();
+        botonRegistrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Registrar");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Registro De Usuario");
 
-        jLabel1.setText("Registro de Usuario");
-
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Nombre De Usuario");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Contraseña");
+
+        registroUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registroUsuarioActionPerformed(evt);
+            }
+        });
+
+        botonRegistrar.setText("Registrar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -48,35 +67,76 @@ public class interfazRegistro extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
+                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(14, 14, 14))))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(55, 55, 55)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(registroUsuario)
+                            .addComponent(registroContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                        .addGap(134, 134, 134)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))))
-                .addContainerGap(145, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(botonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(jLabel2)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(83, 83, 83))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1)
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(registroContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(69, 69, 69)
+                .addComponent(botonRegistrar)
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void registroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroUsuarioActionPerformed
+        // TODO add your handling code here:
+        String nombreUsuario =  registroUsuario.getText();
+        String contrasena =  registroContrasena.getText();     
+        Conexion cc= new Conexion();
+        Connection cn = null;
+        try {
+            cn = cc.getConexion();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(interfazAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
+            if(existe(nombreUsuario)){
+                JOptionPane.showMessageDialog(null,"El Usuario Ya Existe!!!");
+            }else{  
+                PreparedStatement pst=cn.prepareStatement("INSERT INTO REGISTRO(NOMBRE_USUARIO,CONTRASENA) VALUES(?,?)");
+                pst.setString(1,nombreUsuario);
+                pst.setString(2,contrasena);
+                int a=pst.executeUpdate();
+                if(a>0){
+                    JOptionPane.showMessageDialog(null,"Registro exitoso");
+                    limpiar();
+                }
+                else{
+                         JOptionPane.showMessageDialog(null,"Error al agregar");
+                    }
+                
+                    
+            
+        } 
+        }
+            catch(Exception e){
+       }   
+    }//GEN-LAST:event_registroUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,9 +174,37 @@ public class interfazRegistro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton botonRegistrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField registroContrasena;
+    private javax.swing.JTextField registroUsuario;
     // End of variables declaration//GEN-END:variables
+
+    private boolean existe(String nombreUsuario) throws ClassNotFoundException, SQLException {
+        PreparedStatement ps = null;
+        Conexion cc = new Conexion();
+        Connection cn = null;
+        cn = cc.getConexion();
+        //Connection con = getConexion();
+        ResultSet rs;
+        String sql = "SELECT NOMBRE_USUARIO FROM USUARIO WHERE NOMBRE_USUARIO = ?";
+
+        ps = cn.prepareStatement(sql);
+        ps.setString(1, nombreUsuario);
+        
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    private void limpiar() {
+         registroUsuario.setText("");
+    }
 }
