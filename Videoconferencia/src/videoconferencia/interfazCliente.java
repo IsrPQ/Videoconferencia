@@ -97,8 +97,15 @@ public class interfazCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonIniSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniSesionActionPerformed
-
-            // TODO add your handling code here:
+            try {
+                Socket miSocket = new Socket("192.168.100.2",9999);
+                DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
+                flujo_salida.writeUTF(registroUsuario.getText());
+                flujo_salida.close();
+            
+            
+            
+            /*// TODO add your handling code here:
             String nombreUsuario =  registroUsuario.getText();
             
             Conexion cc=new Conexion();
@@ -127,6 +134,12 @@ public class interfazCliente extends javax.swing.JFrame {
             }
             catch(Exception e){
             }
+            */
+        } catch (IOException ex) {
+            Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+            
     }//GEN-LAST:event_botonIniSesionActionPerformed
 
     /**
