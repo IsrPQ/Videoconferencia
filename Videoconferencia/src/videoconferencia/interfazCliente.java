@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,6 +29,8 @@ public class interfazCliente extends javax.swing.JFrame {
      */
     public interfazCliente() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -39,10 +42,15 @@ public class interfazCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
         botonIniSesion = new javax.swing.JButton();
         nombreUsuario = new javax.swing.JLabel();
         registroUsuario = new javax.swing.JTextField();
         tituloConferencia = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        contrasena = new javax.swing.JTextField();
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,38 +68,49 @@ public class interfazCliente extends javax.swing.JFrame {
 
         tituloConferencia.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         tituloConferencia.setForeground(new java.awt.Color(51, 51, 255));
-        tituloConferencia.setText("Registro a la Video Conferencia");
+        tituloConferencia.setText("Acceso A Video Conferencia");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Contraseña:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tituloConferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(nombreUsuario)
-                                .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(79, 79, 79)
-                            .addComponent(botonIniSesion))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nombreUsuario)
+                            .addComponent(registroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addComponent(contrasena)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(botonIniSesion)))
                 .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(tituloConferencia)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(tituloConferencia)
-                .addGap(55, 55, 55)
+                .addGap(27, 27, 27)
                 .addComponent(nombreUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
                 .addComponent(botonIniSesion)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
@@ -101,7 +120,7 @@ public class interfazCliente extends javax.swing.JFrame {
 
         // TODO add your handling code here:
         String nombreUsuario = registroUsuario.getText();
-
+        String pass = contrasena.getText();
         Conexion cc = new Conexion();
         Connection cn = null;
         try {
@@ -110,39 +129,32 @@ public class interfazCliente extends javax.swing.JFrame {
             Logger.getLogger(interfazAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            if (existe(nombreUsuario)) {
-                JOptionPane.showMessageDialog(null, "EL USUARIO YA EXISTE!!!");
+            if (existe(nombreUsuario,pass)) {
+                JOptionPane.showMessageDialog(null, "Bienvenido");
+        //conexion con el servidor
+        
+                Socket miSocket;
+                   try {
+                   String ip = InetAddress.getLocalHost().getHostAddress();   
+                   //Socket miSocket = new Socket("192.168.100.2",9999); // isra
+                   //miSocket = new Socket("192.168.0.106", 9999); // da
+                   miSocket = new Socket(ip, 9999); //general
+
+                   DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
+                   flujo_salida.writeUTF(registroUsuario.getText());
+                   flujo_salida.close();
+
+               } catch (IOException ex) {
+                   Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
+               }
             } else {
 
-                PreparedStatement pst = cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
-                pst.setString(1, nombreUsuario);
-                int a = pst.executeUpdate();
-                if (a > 0) {
-                    JOptionPane.showMessageDialog(null, "Registro exitoso");
-                    limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al agregar");
-                }
+                JOptionPane.showMessageDialog(null, "El Usuario No Existe");
             }
         } catch (Exception e) {
         }
                
-        //conexion con el servidor
-        
-        Socket miSocket;
-        try {
-            String ip = InetAddress.getLocalHost().getHostAddress();   
-            //Socket miSocket = new Socket("192.168.100.2",9999); // isra
-            //miSocket = new Socket("192.168.0.106", 9999); // da
-            miSocket = new Socket(ip, 9999); //general
 
-            DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
-            flujo_salida.writeUTF(registroUsuario.getText());
-            flujo_salida.close();
-
-        } catch (IOException ex) {
-            Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }//GEN-LAST:event_botonIniSesionActionPerformed
 
     /**
@@ -182,22 +194,26 @@ public class interfazCliente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonIniSesion;
+    private javax.swing.JTextField contrasena;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel nombreUsuario;
     private javax.swing.JTextField registroUsuario;
     private javax.swing.JLabel tituloConferencia;
     // End of variables declaration//GEN-END:variables
 
-    private boolean existe(String nombreUsuario) throws SQLException, ClassNotFoundException {
+    private boolean existe(String nombreUsuario, String contrasena) throws SQLException, ClassNotFoundException {
         PreparedStatement ps = null;
         Conexion cc = new Conexion();
         Connection cn = null;
         cn = cc.getConexion();
         //Connection con = getConexion();
         ResultSet rs;
-        String sql = "SELECT NOMBRE_USUARIO FROM USUARIO WHERE NOMBRE_USUARIO = ?";
+        String sql = "SELECT NOMBRE_USUARIO FROM REGISTRO WHERE NOMBRE_USUARIO = ? AND CONTRASENA= ? ";
 
         ps = cn.prepareStatement(sql);
         ps.setString(1, nombreUsuario);
+        ps.setString(2, contrasena);
         rs = ps.executeQuery();
 
         if (rs.next()) {

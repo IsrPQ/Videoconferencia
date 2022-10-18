@@ -14,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -26,6 +27,8 @@ public class interfazAnfitrion extends javax.swing.JFrame{
      */
     public interfazAnfitrion() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setLocationRelativeTo(null);
         /*
         Thread hilo = new Thread(this);
         hilo.start();
