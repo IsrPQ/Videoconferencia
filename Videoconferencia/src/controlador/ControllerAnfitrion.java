@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ public class ControllerAnfitrion implements ActionListener, Runnable {
         this.vista.botonDetener.addActionListener(this);
         
     }
+    DefaultListModel model = new DefaultListModel();
     public void iniciarServidor() throws ClassNotFoundException{
         try {
             servidor = new ServerSocket(PUERTO);
@@ -60,7 +62,8 @@ public class ControllerAnfitrion implements ActionListener, Runnable {
                 mensaje = clienteRecibido.getMensajeTexto();
                 this.vista.txtAreaMonitorCliente.append("\n Se ha conectado: "+mensaje);
                 
-                
+                vista.lista.setModel(model);
+                model.addElement(mensaje);
                 
         
                 

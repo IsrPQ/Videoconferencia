@@ -49,22 +49,32 @@ public class interfazAnfitrion extends javax.swing.JFrame{
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        menu = new javax.swing.JPopupMenu();
+        eliminar = new javax.swing.JMenuItem();
+        silenciar = new javax.swing.JMenuItem();
         monitorCliente = new javax.swing.JLabel();
         conectados = new javax.swing.JLabel();
         estadoServer = new javax.swing.JLabel();
         textServidor = new javax.swing.JTextField();
         botonComenzar = new javax.swing.JButton();
         botonDetener = new javax.swing.JButton();
-        conectorClientes = new javax.swing.JTextField();
         ventanaServer = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaMonitorCliente = new javax.swing.JTextArea();
         btnCamara = new javax.swing.JButton();
         lbCamara = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lista = new javax.swing.JList<>();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
+
+        eliminar.setText("ELIMINAR");
+        menu.add(eliminar);
+
+        silenciar.setText("SILENCIAR");
+        menu.add(silenciar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,8 +107,6 @@ public class interfazAnfitrion extends javax.swing.JFrame{
             }
         });
 
-        conectorClientes.setBackground(new java.awt.Color(255, 255, 204));
-
         ventanaServer.setFont(new java.awt.Font("Gill Sans MT Condensed", 1, 18)); // NOI18N
         ventanaServer.setForeground(new java.awt.Color(0, 153, 51));
         ventanaServer.setText("SALA PRINCIPAL");
@@ -115,6 +123,10 @@ public class interfazAnfitrion extends javax.swing.JFrame{
         });
 
         lbCamara.setBackground(new java.awt.Color(51, 51, 51));
+
+        lista.setComponentPopupMenu(menu);
+        lista.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane3.setViewportView(lista);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,9 +160,9 @@ public class interfazAnfitrion extends javax.swing.JFrame{
                                 .addComponent(conectados)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addComponent(conectorClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
+                                .addGap(104, 104, 104)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(lbCamara, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -174,9 +186,8 @@ public class interfazAnfitrion extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lbCamara, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(conectorClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2)))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(15, 15, 15)
                 .addComponent(estadoServer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -231,13 +242,17 @@ public class interfazAnfitrion extends javax.swing.JFrame{
     public javax.swing.JButton botonDetener;
     public javax.swing.JButton btnCamara;
     private javax.swing.JLabel conectados;
-    private javax.swing.JTextField conectorClientes;
+    private javax.swing.JMenuItem eliminar;
     private javax.swing.JLabel estadoServer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     public javax.swing.JLabel lbCamara;
+    public javax.swing.JList<String> lista;
+    private javax.swing.JPopupMenu menu;
     private javax.swing.JLabel monitorCliente;
+    private javax.swing.JMenuItem silenciar;
     public javax.swing.JTextField textServidor;
     public javax.swing.JTextArea txtAreaMonitorCliente;
     private javax.swing.JLabel ventanaServer;
