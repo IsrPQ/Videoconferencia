@@ -17,25 +17,24 @@ import java.util.logging.Logger;
  * @author Israel
  */
 public class IniciarServidor implements Runnable {
-    private final int PUERTO=999;
+
+    private final int PUERTO = 999;
+
     @Override
     public void run() {
         try {
             ServerSocket servidor = new ServerSocket(PUERTO);
-            
+
             Socket miSocket = servidor.accept();
-            
+
             DataInputStream flujo_entrada = new DataInputStream(miSocket.getInputStream());
-            
+
             String mensaje_texto = flujo_entrada.readUTF();
-            
-            
-            
+
         } catch (IOException ex) {
             Logger.getLogger(IniciarServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
-    
+
 }

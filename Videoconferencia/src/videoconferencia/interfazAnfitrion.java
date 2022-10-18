@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class interfazAnfitrion extends javax.swing.JFrame{
+public class interfazAnfitrion extends javax.swing.JFrame {
 
     /**
      * Creates new form interfazAnfitrion
@@ -29,7 +29,7 @@ public class interfazAnfitrion extends javax.swing.JFrame{
         /*
         Thread hilo = new Thread(this);
         hilo.start();
-        */
+         */
     }
 
     /**
@@ -206,7 +206,6 @@ public class interfazAnfitrion extends javax.swing.JFrame{
     private javax.swing.JLabel ventanaServer;
     // End of variables declaration//GEN-END:variables
 
-    
     /*
     @Override
     public void run() {
@@ -230,5 +229,5 @@ public class interfazAnfitrion extends javax.swing.JFrame{
             Logger.getLogger(IniciarServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-*/
+     */
 }

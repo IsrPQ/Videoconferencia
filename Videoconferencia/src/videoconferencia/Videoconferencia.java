@@ -4,8 +4,6 @@
  */
 package videoconferencia;
 
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,9 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
- * @author 
+ * @author
  */
 public class Videoconferencia {
 
@@ -27,6 +26,5 @@ public class Videoconferencia {
         new interfazAnfitrion().setVisible(true);
         new interfazCliente().setVisible(true);
     }
-    
-    
+
 }

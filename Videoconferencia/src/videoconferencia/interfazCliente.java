@@ -7,6 +7,7 @@ package videoconferencia;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.Connection;
@@ -39,10 +40,15 @@ public class interfazCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         botonIniSesion = new javax.swing.JButton();
-        nombreUsuario = new javax.swing.JLabel();
+        ipLabel = new javax.swing.JLabel();
         registroUsuario = new javax.swing.JTextField();
         tituloConferencia = new javax.swing.JLabel();
+        IpTextField = new javax.swing.JTextField();
+        nombreUsuario1 = new javax.swing.JLabel();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,43 +61,63 @@ public class interfazCliente extends javax.swing.JFrame {
             }
         });
 
-        nombreUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        nombreUsuario.setText("Nombre Usuario:");
+        ipLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ipLabel.setText("Ip del Anfitrion");
 
         tituloConferencia.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         tituloConferencia.setForeground(new java.awt.Color(51, 51, 255));
         tituloConferencia.setText("Registro a la Video Conferencia");
+
+        nombreUsuario1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        nombreUsuario1.setText("Nombre Usuario:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(tituloConferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(nombreUsuario)
-                                .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(79, 79, 79)
-                            .addComponent(botonIniSesion))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(registroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(ipLabel)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(botonIniSesion))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(IpTextField)))
                 .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(36, 36, 36)
+                    .addComponent(nombreUsuario1)
+                    .addContainerGap(131, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(tituloConferencia)
-                .addGap(55, 55, 55)
-                .addComponent(nombreUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(82, 82, 82)
                 .addComponent(registroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(4, 4, 4)
+                .addComponent(ipLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(IpTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonIniSesion)
                 .addContainerGap(55, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(108, 108, 108)
+                    .addComponent(nombreUsuario1)
+                    .addContainerGap(149, Short.MAX_VALUE)))
         );
 
         pack();
@@ -112,6 +138,9 @@ public class interfazCliente extends javax.swing.JFrame {
         try {
             if (existe(nombreUsuario)) {
                 JOptionPane.showMessageDialog(null, "EL USUARIO YA EXISTE!!!");
+                interfazAnfitrion anfitrion = new interfazAnfitrion();
+                anfitrion.setVisible(true);
+                this.dispose();
             } else {
 
                 PreparedStatement pst = cn.prepareStatement("INSERT INTO USUARIO(NOMBRE_USUARIO) VALUES(?)");
@@ -126,19 +155,26 @@ public class interfazCliente extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-               
+
         //conexion con el servidor
-        
         Socket miSocket;
         try {
-            String ip = InetAddress.getLocalHost().getHostAddress();   
+            //String ip = InetAddress.getLocalHost().getHostAddress();
             //Socket miSocket = new Socket("192.168.100.2",9999); // isra
             //miSocket = new Socket("192.168.0.106", 9999); // da
-            miSocket = new Socket(ip, 9999); //general
+            /*
+            usuario debe conectarse a la ip del servidor
+            entonces el servidor debe mostrar su ip
+             */
+
+            miSocket = new Socket(IpTextField.getText(), 9999); //general
 
             DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
             flujo_salida.writeUTF(registroUsuario.getText());
             flujo_salida.close();
+
+        } catch (ConnectException c) {
+            JOptionPane.showMessageDialog(null, "Error de conexion. \n " + c.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 
         } catch (IOException ex) {
             Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,8 +217,11 @@ public class interfazCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField IpTextField;
     private javax.swing.JButton botonIniSesion;
-    private javax.swing.JLabel nombreUsuario;
+    private javax.swing.JLabel ipLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel nombreUsuario1;
     private javax.swing.JTextField registroUsuario;
     private javax.swing.JLabel tituloConferencia;
     // End of variables declaration//GEN-END:variables
