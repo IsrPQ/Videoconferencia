@@ -23,6 +23,7 @@ public class interfazRegistro extends javax.swing.JFrame {
      */
     public interfazRegistro() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

@@ -15,6 +15,7 @@ public class interfazDocente extends javax.swing.JFrame {
      */
     public interfazDocente() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
