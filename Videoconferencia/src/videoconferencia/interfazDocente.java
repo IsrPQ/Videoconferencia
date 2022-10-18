@@ -5,6 +5,7 @@
 package videoconferencia;
 
 import controlador.ControllerAnfitrion;
+import controlador.ControllerCamara;
 import javax.swing.JFrame;
 
 /**
@@ -88,6 +89,7 @@ public class interfazDocente extends javax.swing.JFrame {
          // TODO add your handling code here:
          interfazAnfitrion newframe= new interfazAnfitrion();
          ControllerAnfitrion ca=new ControllerAnfitrion(newframe);
+         ControllerCamara cc = new ControllerCamara(newframe);
          newframe.setVisible(true);
          newframe.setLocationRelativeTo(null);
         

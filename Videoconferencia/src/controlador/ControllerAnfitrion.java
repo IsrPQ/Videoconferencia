@@ -36,7 +36,7 @@ public class ControllerAnfitrion implements ActionListener, Runnable {
         
         this.vista.botonComenzar.addActionListener(this);
         this.vista.botonDetener.addActionListener(this);
-        this.vista.btnCamara.addActionListener(this);
+        
     }
     public void iniciarServidor() throws ClassNotFoundException{
         try {
@@ -110,23 +110,16 @@ public class ControllerAnfitrion implements ActionListener, Runnable {
             this.vista.textServidor.setText(" ");
             this.vista.botonComenzar.setEnabled(true);
         }
-        if(e.getSource()==vista.btnCamara){
-            Thread hilo = new Thread(this);
-            hilo.start();
-            System.out.println("Iniciando Camara");
-        }
     }
 
     @Override
     public void run() {
         try {
-            iniciarCamara();
             iniciarServidor();
+            
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ControllerAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ControllerAnfitrion.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 }
