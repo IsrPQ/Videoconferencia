@@ -1,40 +1,34 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package videoconferencia;
 
+import java.io.Serializable;
+
 /**
  *
- * @author famil
+ * @author Usuario
  */
-public class Usuario {
-    private String nombreUsuario;
-    private String contrasena;
+public class Usuario implements Serializable{
+   private String mensajeTexto;
+   public Usuario(){
+   
+   }
 
-    public Usuario(String nombreUsuario, String contrasena) {
-        this.nombreUsuario = nombreUsuario;
-        this.contrasena = contrasena;
+    public Usuario(String mensajeTexto) {
+        this.mensajeTexto = mensajeTexto;
     }
 
-    public Usuario() {
+    public String getMensajeTexto() {
+        return mensajeTexto;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public void setMensajeTexto(String mensajeTexto) {
+        this.mensajeTexto = mensajeTexto;
     }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
+   
    
     
 }

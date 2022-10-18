@@ -78,7 +78,7 @@ public class interfazDocente extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, 240, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/videoconferencia/personaje-dibujos-animados-grafico-vector-ilustracion-reunion-linea_516790-1216.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/videoconferencia/imagen.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 645));
 
         pack();

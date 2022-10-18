@@ -4,39 +4,44 @@
  * and open the template in the editor.
  */
 package videoconferencia;
-
+import com.github.sarxos.webcam.Webcam;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.ServerSocket;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-/**
- *
- * @author Usuario
- */
-public class VideoCliente {
-    public static void main(String args[]) throws IOException, ClassNotFoundException{
-        ServerSocket server = new ServerSocket(9999);
-        System.out.println("Esperando");
+
+
+
+
+public class VideoCliente{
+    static Socket socket;
+    public static void main(String args[]) throws IOException{
+        Webcam webcam = Webcam.getDefault();
+        webcam.open();
+        socket = new Socket("localhost",9999);
         
-        Socket socket = server.accept();
-        System.out.println("Conectado");
+        BufferedImage bm = webcam.getImage();
         
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-        JLabel label = new JLabel();
-        JFrame frame = new JFrame();
+        ObjectOutputStream dout = new ObjectOutputStream(socket.getOutputStream());
+        ImageIcon im = new ImageIcon(bm);
+        
+        JFrame frame = new JFrame("Pc 1");
         frame.setSize(640,360);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         
-        label.setSize(640, 360);
-        label.setVisible(true);
-    
-        frame.add(label);
+        JLabel l = new JLabel();
+        l.setVisible(true);
+        frame.add(l);
         frame.setVisible(true);
         while(true){
-            label.setIcon((ImageIcon)in.readObject());
+           bm = webcam.getImage();
+           im = new ImageIcon(bm);
+           dout.writeObject(im);
+           l.setIcon(im);
+           dout.flush();
         }
-    }
+    } 
 }

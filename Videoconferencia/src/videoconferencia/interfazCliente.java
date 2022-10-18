@@ -5,8 +5,11 @@
  */
 package videoconferencia;
 
+import com.github.sarxos.webcam.Webcam;
+import java.awt.image.BufferedImage;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.Connection;
@@ -15,8 +18,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static videoconferencia.VideoCliente.socket;
 
 /**
  *
@@ -27,10 +32,13 @@ public class interfazCliente extends javax.swing.JFrame {
     /**
      * Creates new form interfazCliente
      */
+    static Socket socket;
     public interfazCliente() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
+       
+        
     }
 
     /**
@@ -49,6 +57,7 @@ public class interfazCliente extends javax.swing.JFrame {
         tituloConferencia = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         contrasena = new javax.swing.JTextField();
+        lbCam = new javax.swing.JLabel();
 
         jTextField1.setText("jTextField1");
 
@@ -73,27 +82,31 @@ public class interfazCliente extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Contraseña:");
 
+        lbCam.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nombreUsuario)
-                            .addComponent(registroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
-                            .addComponent(contrasena)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(botonIniSesion)))
-                .addContainerGap(39, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(tituloConferencia)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(botonIniSesion))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbCam, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(nombreUsuario)
+                                .addComponent(registroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addComponent(contrasena)))))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,7 +123,8 @@ public class interfazCliente extends javax.swing.JFrame {
                 .addComponent(contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
                 .addComponent(botonIniSesion)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbCam, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
         );
 
         pack();
@@ -139,10 +153,18 @@ public class interfazCliente extends javax.swing.JFrame {
                    //Socket miSocket = new Socket("192.168.100.2",9999); // isra
                    //miSocket = new Socket("192.168.0.106", 9999); // da
                    miSocket = new Socket(ip, 9999); //general
-
-                   DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
+                   //Enviamos un cliente por la RED
+                   Usuario cli = new Usuario();
+                   cli.setMensajeTexto(nombreUsuario);
+                   ObjectOutputStream obj = new ObjectOutputStream(miSocket.getOutputStream());
+                   obj.writeObject(cli);
+                   
+                   
+                   miSocket.close();
+                  
+                   /*DataOutputStream flujo_salida = new DataOutputStream(miSocket.getOutputStream());
                    flujo_salida.writeUTF(registroUsuario.getText());
-                   flujo_salida.close();
+                   flujo_salida.close();*/
 
                } catch (IOException ex) {
                    Logger.getLogger(interfazCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,7 +182,7 @@ public class interfazCliente extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -188,8 +210,22 @@ public class interfazCliente extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new interfazCliente().setVisible(true);
+                
             }
         });
+        Webcam webcam = Webcam.getDefault();
+        webcam.open();                
+        socket = new Socket("localhost",8888);
+        BufferedImage bm = webcam.getImage();
+        ObjectOutputStream dout = new ObjectOutputStream(socket.getOutputStream());
+        ImageIcon im = new ImageIcon(bm);
+        while(true){
+            bm = webcam.getImage();
+            im = new ImageIcon(bm);
+            dout.writeObject(im);
+            lbCam.setIcon(im);
+            dout.flush();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -197,6 +233,7 @@ public class interfazCliente extends javax.swing.JFrame {
     private javax.swing.JTextField contrasena;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextField1;
+    public static javax.swing.JLabel lbCam;
     private javax.swing.JLabel nombreUsuario;
     private javax.swing.JTextField registroUsuario;
     private javax.swing.JLabel tituloConferencia;
